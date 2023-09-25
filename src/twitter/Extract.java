@@ -3,8 +3,9 @@
  */
 package twitter;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.lang.*;
+import java.time.*;
 
 /**
  * Extract consists of methods that extract information from a list of tweets.
@@ -27,16 +28,16 @@ public class Extract {
         Instant minTime = Instant.now();
         Instant maxTime = Instant.now();
         for(Tweet i: tweets){
-            if(minTime.compareTo(i.timestamp) == 1){
-                minTime = i.timestamp;
+            if(minTime.compareTo(i.getTimestamp()) == 1){
+                minTime = i.getTimestamp();
             }
-            if(maxTime.compareTo(i.timestamp) == -1){
-                maxTime = i.timestamp;
+            if(maxTime.compareTo(i.getTimestamp()) == -1){
+                maxTime = i.getTimestamp();
             }
         }
         return new Timespan(minTime, maxTime);
 
-        throw new RuntimeException("not implemented");
+//        throw new RuntimeException("not implemented");
     }
 
     /**
@@ -48,15 +49,15 @@ public class Extract {
      */
     private static boolean isValidUsernameCharacter(char ch){
         if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')){
-            return 1;
+            return true;
         }
         if(ch >= '0' && ch <= '9'){
-            return 1;
+            return true;
         }
         if(ch == '-' || ch == '_'){
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     
@@ -76,20 +77,20 @@ public class Extract {
      *         include a username at most once.
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
-        Set<String> mention = new Hashset<>();
+        Set<String> mention = new TreeSet<>();
         for(Tweet i: tweets){
             String text = i.getText();
             for(Integer pos = 0; pos < text.length(); pos++){
-                if(text[pos] != '@'){
+                if(text.charAt(pos) != '@'){
                     continue;
                 }
-                if((pos == 0 || !isValidUsernameCharacter(text[pos-1]))
-                    && (pos == text.length()-1 || !isValidUsernameCharacter(text[pos+1]))){
+                if((pos == 0 || !isValidUsernameCharacter(text.charAt(pos-1)))
+                    && (pos == text.length()-1 || !isValidUsernameCharacter(text.charAt(pos+1)))){
                     continue;
                 }
 
                 int _pos=pos+1;
-                while(_pos < text.length() && isValidUsernameCharacter(text[_pos])){
+                while(_pos < text.length() && isValidUsernameCharacter(text.charAt(_pos))){
                     _pos++;
                 }
                 if(_pos == pos+1){
@@ -100,7 +101,7 @@ public class Extract {
         }
         return mention;
 
-        throw new RuntimeException("not implemented");
+//        throw new RuntimeException("not implemented");
     }
 
 }
