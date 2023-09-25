@@ -24,9 +24,42 @@ public class Extract {
      *         every tweet in the list.
      */
     public static Timespan getTimespan(List<Tweet> tweets) {
+        Instant minTime = Instant.now();
+        Instant maxTime = Instant.now();
+        for(Tweet i: tweets){
+            if(minTime.compareTo(i.timestamp) == 1){
+                minTime = i.timestamp;
+            }
+            if(maxTime.compareTo(i.timestamp) == -1){
+                maxTime = i.timestamp;
+            }
+        }
+        return new Timespan(minTime, maxTime);
+
         throw new RuntimeException("not implemented");
     }
 
+    /**
+     * Check if the character is valid in a Twitter username
+     *
+     * @param ch
+     *            character to check
+     * @return return a boolean show if the character is valid
+     */
+    private static boolean isValidUsernameCharacter(char ch){
+        if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')){
+            return 1;
+        }
+        if(ch >= '0' && ch <= '9'){
+            return 1;
+        }
+        if(ch == '-' || ch == '_'){
+            return 1;
+        }
+        return 0;
+    }
+
+    
     /**
      * Get usernames mentioned in a list of tweets.
      * 
@@ -43,6 +76,30 @@ public class Extract {
      *         include a username at most once.
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
+        Set<String> mention = new Hashset<>();
+        for(Tweet i: tweets){
+            String text = i.getText();
+            for(Integer pos = 0; pos < text.length(); pos++){
+                if(text[pos] != '@'){
+                    continue;
+                }
+                if((pos == 0 || !isValidUsernameCharacter(text[pos-1]))
+                    && (pos == text.length()-1 || !isValidUsernameCharacter(text[pos+1]))){
+                    continue;
+                }
+
+                int _pos=pos+1;
+                while(_pos < text.length() && isValidUsernameCharacter(text[_pos])){
+                    _pos++;
+                }
+                if(_pos == pos+1){
+                    continue;
+                }
+                mention.add(text.substring(pos+1, _pos));
+            }
+        }
+        return mention;
+
         throw new RuntimeException("not implemented");
     }
 
