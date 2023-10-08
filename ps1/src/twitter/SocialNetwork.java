@@ -6,6 +6,13 @@ package twitter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
+import java.util.HashMap;
 
 /**
  * SocialNetwork provides methods that operate on a social network.
@@ -41,7 +48,19 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        for(Tweet i: tweets){
+            Set<String> mentioned = Extract.getMentionedUsers(Arrays.asList(i));
+            if(!followsGraph.containsKey(i.getAuthor())){
+                followsGraph.put(i.getAuthor(), mentioned);
+            }
+            else{
+                followsGraph.get(i.getAuthor()).addAll(mentioned);
+            }
+        }
+        return followsGraph;
+        
+//        throw new RuntimeException("not implemented");
     }
 
     /**
@@ -54,7 +73,21 @@ public class SocialNetwork {
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new RuntimeException("not implemented");
+        List<String> rank = new ArrayList<>();
+        for(String name: followsGraph.keySet()){
+            rank.add(name);
+        }
+        
+        Collections.sort(rank, new Comparator<String>(){
+            public int compare(String str1, String str2){
+                boolean ret = followsGraph.get(str1).size()>followsGraph.get(str2).size();
+                return ret?1:0;
+            }
+        });
+        
+        return rank;
+        
+//        throw new RuntimeException("not implemented");
     }
 
 }
