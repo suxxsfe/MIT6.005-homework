@@ -25,8 +25,8 @@ public class Extract {
      *         every tweet in the list.
      */
     public static Timespan getTimespan(List<Tweet> tweets) {
-        Instant minTime = Instant.now();
-        Instant maxTime = Instant.now();
+        Instant minTime = Instant.MAX;
+        Instant maxTime = Instant.MIN;
         for(Tweet i: tweets){
             if(minTime.compareTo(i.getTimestamp()) == 1){
                 minTime = i.getTimestamp();
