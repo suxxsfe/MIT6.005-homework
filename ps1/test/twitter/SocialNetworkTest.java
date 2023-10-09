@@ -101,8 +101,12 @@ public class SocialNetworkTest {
         makeFollowsGraphCorrect(followsGraph);
         List<String> influencers = SocialNetwork.influencers(followsGraph);
        
-        List<String> influencers = new ArrayList<>();
-
+        List<String> influencersCorrect = Arrays.asList("alyssa","bbitdiddle","cccc","dabc");
+        
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(influencers);
+        
+        assertTrue("wrong influencers order",influencersCorrect.equals(influencers));
     }
  
     /*

@@ -74,14 +74,32 @@ public class SocialNetwork {
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
         List<String> rank = new ArrayList<>();
+        Map<String, Integer> followersNum = new HashMap<>();
         for(String name: followsGraph.keySet()){
             rank.add(name);
+            if(!followersNum.containsKey(name)){
+                followersNum.put(name, 0);
+            }
+            
+            Set<String> followed = followsGraph.get(name);
+            for(String _name: followed){
+                if(followersNum.containsKey(_name)){
+                    Integer num = followersNum.get(_name);
+                    followersNum.put(_name, num+1);
+                }
+                else{
+                    followersNum.put(_name, 1);
+                }
+            }
         }
         
         Collections.sort(rank, new Comparator<String>(){
             public int compare(String str1, String str2){
-                boolean ret = followsGraph.get(str1).size()>followsGraph.get(str2).size();
-                return ret?1:0;
+                if(followersNum.get(str1) == followersNum.get(str2)){
+                    return str1.compareTo(str2);
+                }
+                boolean ret = followersNum.get(str1) > followersNum.get(str2);
+                return ret?-1:1;
             }
         });
         
