@@ -84,8 +84,7 @@ public class Extract {
                 if(text.charAt(pos) != '@'){
                     continue;
                 }
-                if((pos == 0 || !isValidUsernameCharacter(text.charAt(pos-1)))
-                    && (pos == text.length()-1 || !isValidUsernameCharacter(text.charAt(pos+1)))){
+                if((pos != 0 && isValidUsernameCharacter(text.charAt(pos-1)))){
                     continue;
                 }
 
