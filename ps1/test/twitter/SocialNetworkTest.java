@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.time.Instant;
+
+import java.util.HashSet;
+import java.util.Arrays;
+
+//import java.io.*;
 
 import org.junit.Test;
 
@@ -40,7 +46,65 @@ public class SocialNetworkTest {
         
         assertTrue("expected empty list", influencers.isEmpty());
     }
+    
+    private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
+    private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");
+ 
+    private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?   ", d1);
+    private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype @alyssa", d2);
+    private static final Tweet tweet3 = new Tweet(3, "cccc", "rivest talk in 30 minutes #hype @bbitdiddle ", d2);
+    private static final Tweet tweet4 = new Tweet(4, "alyssa", "rivest talk in 30 minutes #hype asdfsf@cccccccccccc", d2);
+    private static final Tweet tweet5 = new Tweet(5, "bbitdiddle", "rivest talk in 30 minutes #hype @cccc", d2);
+    private static final Tweet tweet6 = new Tweet(6, "dabc", "rivest talk in 30 minutes #hype @cccc @alyssa @bbitdiddle", d2);
+    private static final Tweet tweet7 = new Tweet(7, "cccc", "rivest talk in 30 minutes #hype @alyssa", d2);
+    
+    private static void makeFollowsGraphCorrect(Map<String, Set<String>> followsGraphCorrect){
+        followsGraphCorrect.put("alyssa", new HashSet<String>(){
+        });
+        followsGraphCorrect.put("bbitdiddle", new HashSet<String>(){
+            {
+                add("alyssa");
+                add("cccc");
+            }
+        });
+        followsGraphCorrect.put("cccc", new HashSet<String>(){
+            {
+                add("bbitdiddle");
+                add("alyssa");
+            }
+        });
+        followsGraphCorrect.put("dabc", new HashSet<String>(){
+            {
+                add("alyssa");
+                add("bbitdiddle");
+                add("cccc");
+            }
+        });
+    }
+    
+    @Test
+    public void testGuessFollowsGraph(){
+        Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet1, tweet2, tweet3, tweet4, tweet5, tweet6, tweet7));
+        
+        Map<String, Set<String>> followsGraphCorrect = new HashMap<>();
+        makeFollowsGraphCorrect(followsGraphCorrect);
+        
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(followsGraph);
+        
+        assertTrue("wrong follow Graph", followsGraphCorrect.equals(followsGraph));
+    }
+    
+    @Test
+    public void testInfluencers(){
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        makeFollowsGraphCorrect(followsGraph);
+        List<String> influencers = SocialNetwork.influencers(followsGraph);
+       
+        List<String> influencers = new ArrayList<>();
 
+    }
+ 
     /*
      * Warning: all the tests you write here must be runnable against any
      * SocialNetwork class that follows the spec. It will be run against several
