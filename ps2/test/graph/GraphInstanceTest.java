@@ -39,7 +39,6 @@ public abstract class GraphInstanceTest {
     
     @Test
     public void testInitialVerticesEmpty() {
-        // TODO you may use, change, or remove this test
         assertEquals("expected new graph to have no vertices",
                 Collections.emptySet(), emptyInstance().vertices());
     }
@@ -129,7 +128,5 @@ public abstract class GraphInstanceTest {
         map = graph.targets("abcd");
         assertEquals("expected to have no targets", Collections.emptyMap(), map);
     }
-    
-    // TODO other tests for instance methods of Graph
     
 }
