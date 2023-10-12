@@ -20,21 +20,29 @@ public class ConcreteVerticesGraph implements Graph<String> {
     private final List<Vertex> vertices = new ArrayList<>();
     
     // Abstraction function:
-    //   TODO
+    //   AF(vertices) = 
     // Representation invariant:
-    //   TODO
+    //   all elements in vertices are different
     // Safety from rep exposure:
-    //   TODO
+    //   All fields are private;
+    //   vertices is mutable List, but no function will use it as the return result;
     
     public ConcreteVerticesGraph(){
         
     }
     
-    // TODO checkRep
+    private void checkRep(){
+        Set<String> vertex = new HashSet<>();
+        
+        for(Vertex i: vertices){
+            assert vertex.contains(i.getName()) == false;
+            vertex.add(i.getName());
+        }
+    }
     
     @Override public boolean add(String vertex) {
-        for(int i = 0; i < vertices.size(); i++){
-            if(vertices.get(i).getName().equals(vertex)){
+        for(Vertex i: vertices){
+            if(i.getName().equals(vertex)){
                 return false;
             }
         }
@@ -46,9 +54,9 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     @Override public int set(String source, String target, int weight) {
-        for(int i = 0; i < vertices.size(); i++){
-            if(vertices.get(i).getName().equals(source)){
-                return vertices.get(i).set(target, weight);
+        for(Vertex i: vertices){
+            if(i.getName().equals(source)){
+                return i.set(target, weight);
             }
         }
         
@@ -58,8 +66,8 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     @Override public boolean remove(String vertex) {
-        for(int i = 0; i < vertices.size(); i++){
-            if(vertices.get(i).getName().equals(vertex)){
+        for(Vertex i: vertices){
+            if(i.getName().equals(vertex)){
                 vertices.remove(i);
                 return true;
             }
@@ -73,8 +81,8 @@ public class ConcreteVerticesGraph implements Graph<String> {
     @Override public Set<String> vertices() {
         Set<String> ret = new HashSet<>();
         
-        for(int i = 0; i < vertices.size(); i++){
-            ret.add(vertices.get(i).getName());
+        for(Vertex i: vertices){
+            ret.add(i.getName());
         }
         
         return ret;
@@ -85,10 +93,9 @@ public class ConcreteVerticesGraph implements Graph<String> {
     @Override public Map<String, Integer> sources(String target) {
         Map<String, Integer> ret = new HashMap<>();
         
-        for(int i = 0;i < vertices.size(); i++){
-            Vertex v = vertices.get(i);
-            if(v.getTargets().containsKey(target)){
-                ret.put(v.getName(), v.getTargets().get(target));
+        for(Vertex i: vertices){
+            if(i.getTargets().containsKey(target)){
+                ret.put(i.getName(), i.getTargets().get(target));
             }
         }
         
@@ -98,9 +105,9 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     @Override public Map<String, Integer> targets(String source) {
-        for(int i = 0; i < vertices.size(); i++){
-            if(vertices.get(i).getName().equals(source)){
-                return vertices.get(i).getTargets();
+        for(Vertex i: vertices){
+            if(i.getName().equals(source)){
+                return i.getTargets();
             }
         }
         
@@ -109,12 +116,23 @@ public class ConcreteVerticesGraph implements Graph<String> {
 //        throw new RuntimeException("not implemented");
     }
     
-    // TODO toString()
+    /**
+     * Give a human-readable representation of the graph.
+     * 
+     * @return a String, representing the graph
+     */
+    public String toString(){
+        String ret = "";
+        
+        return ret;
+    }
     
 }
 
 /**
- * TODO specification
+ * A vertex with label in a directed graph.
+ * Vertex have a label of String
+ * Contains its label, and all vertices which have a edge from this vertex.
  * Mutable.
  * This class is internal to the rep of ConcreteVerticesGraph.
  * 
@@ -127,12 +145,15 @@ class Vertex {
     private final Map<String, Integer> targets = new HashMap<>();
     
     // Abstraction function:
-    //   TODO
+    //   AF(name, targets) = a vertex in a graph, with a label name,
+    //                      hava edges to every keys in targets, with weight of values in targets
     // Representation invariant:
-    //   TODO
+    //   no values in targets euqal to 0
     // Safety from rep exposure:
-    //   TODO
-    
+    //   All fields are private;
+    //   name in String is immutable;
+    //   targets is mutable Map, so getTargets() makes defensive copies to avoid sharing rep's Map object;
+
     public Vertex(){
         
     }
@@ -140,8 +161,21 @@ class Vertex {
         name = vertex;
     }
     
-    // TODO checkRep
+    private void checkRep(){
+        for(String target: targets.keySet()){
+            assert targets.get(target) != 0;
+        }
+    }
     
+    /**
+     * Add, change or remove a weighted edge from this to vertex.
+     * If weight is nonzero, add an edge or update the weight of that edge;
+     * If weight is zero, remove the edge if it exists.
+     * 
+     * @param vertex label of the target vertex
+     * @param weight weight of the edge
+     * @return the previous weight of the edge, or zero if there was no such edge
+     */
     public int set(String vertex, int weight){
         int ret = 0;
         
@@ -158,14 +192,34 @@ class Vertex {
         return ret;
     }
     
+    /**
+     * Get the targets vertices with a directed edge from this vertex
+     * 
+     * @return a map where the key set is the set of labels of the vertices,
+     *         and the value of each key is the weight of the edge
+     */
     public Map<String, Integer> getTargets(){
-        return targets;
+        return new HashMap<String, Integer>(targets);
     }
     
+    /**
+     * Get the name of this vertex
+     * 
+     * @return a String, the name of this vertex
+     */
     public String getName(){
         return name;
     }
     
-    // TODO toString()
+    /**
+     * Give a human-readable representation of the vertex.
+     * 
+     * @return a String, representing the vertex
+     */
+    public String toString(){
+        String ret = "";
+        
+        return ret;
+    }
     
 }
