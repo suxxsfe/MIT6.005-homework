@@ -123,6 +123,10 @@ public class ConcreteVerticesGraph implements Graph<String> {
      */
     public String toString(){
         String ret = "";
+        ret+="Weighted directed graph with "+vertices.size()+" vertices\n";
+        for(Vertex i: vertices){
+            ret+=i.toString()+"\n";
+        }
         
         return ret;
     }
@@ -218,6 +222,10 @@ class Vertex {
      */
     public String toString(){
         String ret = "";
+        ret+="Vertex "+name+":\n";
+        for(String target: targets.keySet()){
+            ret+=name+" -> "+target+"   with weight "+targets.get(target)+"\n";
+        }
         
         return ret;
     }
