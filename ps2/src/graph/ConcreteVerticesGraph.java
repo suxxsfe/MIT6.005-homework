@@ -224,7 +224,7 @@ class Vertex {
         String ret = "";
         ret+="Vertex \""+name+"\":\n";
         for(String target: targets.keySet()){
-            ret+="\""name+"\" -> \""+target+"\"   with weight "+targets.get(target)+"\n";
+            ret+="\""+name+"\" -> \""+target+"\"   with weight "+targets.get(target)+"\n";
         }
         
         return ret;
