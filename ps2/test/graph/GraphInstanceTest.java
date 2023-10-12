@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public abstract class GraphInstanceTest {
     @Test
     public void testAddAndRemove(){
         Graph<String> graph = emptyInstance();
-        Set<String> set = Collections.emptySet();
+        Set<String> set = new HashSet<>();
         
         graph.add("abcd");
         graph.add("1234");
@@ -54,15 +55,15 @@ public abstract class GraphInstanceTest {
         set.add("abcd");
         set.add("1234");
         set.add(" ");
-        assertEquals("expected graph to have \"abcd\", \"1234\", and \" \"", set, graph);
+        assertEquals("expected graph to have \"abcd\", \"1234\", and \" \"", set, graph.vertices());
         
         graph.remove("abcd");
         set.remove("abcd");
-        assertEquals("expected graph to have \"1234\", and \" \"", set, graph);
+        assertEquals("expected graph to have \"1234\", and \" \"", set, graph.vertices());
         
         graph.remove("1234");
         graph.remove(" ");
-        assertEquals("expected graph to have no vertices", Collections.emptySet(), graph);
+        assertEquals("expected graph to have no vertices", Collections.emptySet(), graph.vertices());
     }
     
     @Test
@@ -112,7 +113,7 @@ public abstract class GraphInstanceTest {
         map = graph.targets(" ");
         assertEquals("expected to have targets \"1234\"", new HashMap<String, Integer>(){
             {
-                put("1234", 321);
+                put("1234", 1234);
             }
         }, map);
         
