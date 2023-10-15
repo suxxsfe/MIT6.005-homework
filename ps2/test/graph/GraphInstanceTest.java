@@ -77,16 +77,16 @@ public abstract class GraphInstanceTest {
         ret = graph.set("abcd", " ", 1);
         assertEquals("expected 0 for create a new edge", 0, ret);
         
-        graph.set("abcd", " ", 2);
+        ret = graph.set("abcd", " ", 2);
         assertEquals("expected 1, the previous weight of the edge", 1, ret);
         
-        graph.set("1234", "abcd", 1234);
+        ret = graph.set("1234", "abcd", 1234);
         assertEquals("expected 0 for create a new edge", 0, ret);
         
-        graph.set("1234", "abcd", 0);
-        assertEquals("expected 1234, the previous weight of the edge", 0, ret);
+        ret = graph.set("1234", "abcd", 0);
+        assertEquals("expected 1234, the previous weight of the edge", 1234, ret);
         
-        graph.set("1234", "abcd", 1234);
+        ret = graph.set("1234", "abcd", 1234);
         assertEquals("expected 0 for create a new edge(the edge has been removed before)", 0, ret);
     }
     
