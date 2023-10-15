@@ -170,18 +170,38 @@ class Edge {
         assert weight != 0;
     }
     
+    /**
+     * Get source of the edge
+     * 
+     * @return a String, label of source
+     */
     public String getSource(){
         return source;
     }
     
+    /**
+     * Get target of the edge
+     * 
+     * @return a String, label of target
+     */
     public String getTarget(){
         return target;
     }
     
+    /**
+     * Get weight of the edge
+     * 
+     * @return int, weight of the edge
+     */
     public int getWeight(){
         return weight;
     }
     
+    /**
+     * Get a human-readable representation of the edge
+     * 
+     * @return a String, representing the edge
+     */
     public String toString(){
         return "edge: \""+source+"\" -> \""+target+"\" with weight "+weight+"\n";
     }
