@@ -91,7 +91,7 @@ public abstract class GraphInstanceTest {
     }
     
     @Test
-    public void testSourcesAndgraph(){
+    public void testSourcesAndTarget(){
         Graph<String> graph = emptyInstance();
         Map<String, Integer> map = Collections.emptyMap();
         
