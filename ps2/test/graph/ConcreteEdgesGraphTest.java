@@ -29,9 +29,29 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
      */
     
     // Testing strategy for ConcreteEdgesGraph.toString()
-    //   TODO
+    //   
     
-    // TODO tests for ConcreteEdgesGraph.toString()
+    @Test
+    public void testToString(){
+        Graph<String> graph =emptyInstance();
+        
+        graph.add("abcd");
+        graph.add("1234");
+        graph.add(" ");
+        graph.set("abcd", "1234", 1234);
+        graph.set("1234", " ", 111);
+        graph.set(" ", "1234", 999);
+        
+        String ret = graph.toString();
+        
+        String correct = "Weighted directed graph with 3 vertices\n";
+        correct+="edge: \"abcd\" -> \"1234\" with weight 1234\n";
+        correct+="edge: \"1234\" -> \" \" with weight 111\n";
+        correct+="edge: \" \" -> \"1234\" with weight 999\n";
+        
+        assertEquals("wrong toString()", correct, ret);
+  
+    }
     
     /*
      * Testing Edge...
@@ -40,6 +60,13 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     // Testing strategy for Edge
     //   TODO
     
-    // TODO tests for operations of Edge
+    @Test
+    public void testGetSourceTargetAndWeight(){
+        Edge edge = new Edge(" ", "abcd", 1234);
+        
+        assertEquals("expected \" \" for source", " ", edge.getSource());
+        assertEquals("expected \"abcd\" for target", "abcd", edge.getTarget());
+        assertEquals("expected 1234 for source", 1234, edge.getWeight());
+    }
     
 }
