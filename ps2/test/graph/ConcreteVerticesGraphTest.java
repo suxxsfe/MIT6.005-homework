@@ -47,12 +47,9 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
         String ret = graph.toString();
         
         String correct = "Weighted directed graph with 3 vertices\n";
-        correct+="Vertex \"abcd\":\n";
-        correct+="\"abcd\" -> \"1234\"   with weight 1234\n";
-        correct+="Vertex \"1234\":\n";
-        correct+="\"1234\" -> \" \"   with weight 111\n";
-        correct+="Vertex \" \":\n";
-        correct+="\" \" -> \"1234\"   with weight 999\n";
+        correct+="edge: \"abcd\" -> \"1234\" with weight 1234\n";
+        correct+="edge: \"1234\" -> \" \" with weight 111\n";
+        correct+="edge: \" \" -> \"1234\" with weight 999\n";
         
         assertEquals("wrong toString()", correct, ret);
     }
