@@ -203,7 +203,7 @@ class Edge<L> {
      * 
      * @return a L, representing the edge
      */
-    public String toL(){
+    public String toString(){
         return "edge: \""+source+"\" -> \""+target+"\" with weight "+weight+"\n";
     }
     
