@@ -23,7 +23,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
      * Provide a ConcreteVerticesGraph for tests in GraphInstanceTest.
      */
     @Override public Graph<String> emptyInstance() {
-        return new ConcreteVerticesGraph();
+        return new ConcreteVerticesGraph<String>();
     }
     
     /*
@@ -55,22 +55,22 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     }
     
     /*
-     * Testing Vertex...
+     * Testing Vertex<String>...
      */
     
-    // Testing strategy for Vertex
+    // Testing strategy for Vertex<String>
     //   TODO
     
     @Test
     public void testGetName(){
-        Vertex vertex = new Vertex("abcd");
+        Vertex<String> vertex = new Vertex<>("abcd");
         
         assertEquals("expected name abcd", "abcd", vertex.getName());
     }
     
     @Test
     public void testSet(){
-        Vertex vertex = new Vertex("abcd");
+        Vertex<String> vertex = new Vertex<>("abcd");
         int ret;
         
         ret = vertex.set("1234", 123);
@@ -86,7 +86,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testGetTargets(){
-        Vertex vertex = new Vertex("abcd");
+        Vertex<String> vertex = new Vertex<>("abcd");
         Map<String, Integer> map = new HashMap<>();
         
         vertex.set("1234", 123);
@@ -100,6 +100,5 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
             }
         }, map);
     }
-    // TODO tests for operations of Vertex
     
 }
