@@ -15,13 +15,13 @@ import java.util.Set;
  * 
  * <p>PS2 instructions: you MUST use the provided rep.
  */
-public class ConcreteEdgesGraph implements Graph<String> {
+public class ConcreteEdgesGraph<L> implements Graph<L> {
     
-    private final Set<String> vertices = new HashSet<>();
-    private final List<Edge> edges = new ArrayList<>();
+    private final Set<L> vertices = new HashSet<>();
+    private final List<Edge<L>> edges = new ArrayList<>();
     
     // Abstraction function:
-    //   AF(vertices, edges) = a graph with vertices with label in String,
+    //   AF(vertices, edges) = a graph with vertices with label in L,
     //                          and edges in List edges.
     // Representation invariant:
     //   Elements in List edges are unique, and two vertices of each edge must be contained in Set vertices.
@@ -35,8 +35,8 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
     
     private void checkRep(){
-        Set<Edge> set = new HashSet<>();
-        for(Edge i: edges){
+        Set<Edge<L>> set = new HashSet<>();
+        for(Edge<L> i: edges){
             assert !set.contains(i);
             set.add(i);
             assert vertices.contains(i.getSource());
@@ -44,7 +44,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
         }
     }
     
-    @Override public boolean add(String vertex) {
+    @Override public boolean add(L vertex) {
         if(vertices.contains(vertex)){
             return false;
         }
@@ -54,13 +54,13 @@ public class ConcreteEdgesGraph implements Graph<String> {
 //        throw new RuntimeException("not implemented");
     }
     
-    @Override public int set(String source, String target, int weight) {
+    @Override public int set(L source, L target, int weight) {
         if(!vertices.contains(source) || !vertices.contains(target)){
             return 0;
         }
         
         int ret = 0;
-        for(Edge i: edges){
+        for(Edge<L> i: edges){
             if(i.getSource().equals(source) && i.getTarget().equals(target)){
                 ret = i.getWeight();
                 edges.remove(i);
@@ -69,14 +69,14 @@ public class ConcreteEdgesGraph implements Graph<String> {
         }
         
         if(weight != 0){
-            edges.add(new Edge(source, target, weight));
+            edges.add(new Edge<L>(source, target, weight));
         }
         return ret;
     
 //        throw new RuntimeException("not implemented");
     }
     
-    @Override public boolean remove(String vertex) {
+    @Override public boolean remove(L vertex) {
         if(vertices.contains(vertex)){
             vertices.remove(vertex);
             return true;
@@ -86,16 +86,16 @@ public class ConcreteEdgesGraph implements Graph<String> {
 //        throw new RuntimeException("not implemented");
     }
     
-    @Override public Set<String> vertices() {
-        return new HashSet<String>(vertices);
+    @Override public Set<L> vertices() {
+        return new HashSet<L>(vertices);
         
 //        throw new RuntimeException("not implemented");
     }
     
-    @Override public Map<String, Integer> sources(String target) {
-        Map<String, Integer> source = new HashMap<>();
+    @Override public Map<L, Integer> sources(L target) {
+        Map<L, Integer> source = new HashMap<>();
         
-        for(Edge i: edges){
+        for(Edge<L> i: edges){
             if(i.getTarget().equals(target)){
                 source.put(i.getSource(), i.getWeight());
             }
@@ -105,10 +105,10 @@ public class ConcreteEdgesGraph implements Graph<String> {
 //        throw new RuntimeException("not implemented");
     }
     
-    @Override public Map<String, Integer> targets(String source) {
-        Map<String, Integer> target = new HashMap<>();
+    @Override public Map<L, Integer> targets(L source) {
+        Map<L, Integer> target = new HashMap<>();
         
-        for(Edge i: edges){
+        for(Edge<L> i: edges){
             if(i.getSource().equals(source)){
                 target.put(i.getTarget(), i.getWeight());
             }
@@ -121,13 +121,13 @@ public class ConcreteEdgesGraph implements Graph<String> {
     /**
      * Give a human-readable representation of the graph.
      * 
-     * @return a String, representing the graph
+     * @return a L, representing the graph
      */
     @Override
     public String toString(){
         String graph = "";
         graph+="Weighted directed graph with "+vertices.size()+" vertices\n";
-        for(Edge i: edges){
+        for(Edge<L> i: edges){
             graph+=i.toString();
         }
         return graph;
@@ -136,20 +136,20 @@ public class ConcreteEdgesGraph implements Graph<String> {
 }
 
 /**
- * A directed weighted edge bewteen two vertices with label in String.
+ * A directed weighted edge bewteen two vertices with label in L.
  * Immutable.
  * This class is internal to the rep of ConcreteEdgesGraph.
  * 
  * <p>PS2 instructions: the specification and implementation of this class is
  * up to you.
  */
-class Edge {
+class Edge<L> {
     
-    private String source, target;
+    private L source, target;
     private int weight;
     
     // Abstraction function:
-    //   AF(u,v) = a edge between two vertices, which have label in String u and v
+    //   AF(u,v) = a edge between two vertices, which have label in L u and v
     // Representation invariant:
     //   u != v
     //   weight != 0
@@ -160,7 +160,7 @@ class Edge {
     public Edge(){
         
     }
-    public Edge(String _source, String _target, int _weight){
+    public Edge(L _source, L _target, int _weight){
         source=_source;
         target=_target;
         weight=_weight;
@@ -174,18 +174,18 @@ class Edge {
     /**
      * Get source of the edge
      * 
-     * @return a String, label of source
+     * @return a L, label of source
      */
-    public String getSource(){
+    public L getSource(){
         return source;
     }
     
     /**
      * Get target of the edge
      * 
-     * @return a String, label of target
+     * @return a L, label of target
      */
-    public String getTarget(){
+    public L getTarget(){
         return target;
     }
     
@@ -201,9 +201,9 @@ class Edge {
     /**
      * Get a human-readable representation of the edge
      * 
-     * @return a String, representing the edge
+     * @return a L, representing the edge
      */
-    public String toString(){
+    public String toL(){
         return "edge: \""+source+"\" -> \""+target+"\" with weight "+weight+"\n";
     }
     
