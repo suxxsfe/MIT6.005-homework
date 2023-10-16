@@ -123,6 +123,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
      * 
      * @return a String, representing the graph
      */
+    @Override
     public String toString(){
         String graph = "";
         graph+="Weighted directed graph with "+vertices.size()+" vertices\n";

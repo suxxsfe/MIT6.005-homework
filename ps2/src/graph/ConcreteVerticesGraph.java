@@ -121,6 +121,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
      * 
      * @return a String, representing the graph
      */
+    @Override
     public String toString(){
         String ret = "";
         ret+="Weighted directed graph with "+vertices.size()+" vertices\n";
