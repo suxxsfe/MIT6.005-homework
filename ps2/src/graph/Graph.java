@@ -26,7 +26,9 @@ public interface Graph<L> {
      * @return a new empty weighted directed graph
      */
     public static <L> Graph<L> empty() {
-        throw new RuntimeException("not implemented");
+        return new ConcreteEdgesGraph<L>();
+        
+//        throw new RuntimeException("not implemented");
     }
     
     /**
