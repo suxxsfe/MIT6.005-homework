@@ -5,6 +5,11 @@ package poet;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+
+import java.util.Map;
+import java.util.List;
+import javafx.util.Pair;
 
 import graph.Graph;
 
@@ -55,11 +60,27 @@ public class GraphPoet {
     private final Graph<String> graph = Graph.empty();
     
     // Abstraction function:
-    //   TODO
+    //   AF(graph) = a poem generator implemented by graph.
     // Representation invariant:
-    //   TODO
+    //   
     // Safety from rep exposure:
-    //   TODO
+    //   All fields are private
+    //   function poem() returns immutable String.
+    
+    private Pair<String, Integer> nextWord(String text, int pos){
+        while(pos < text.length() && (text.charAt(pos) == ' ' || text.charAt(pos) == '\n')){
+            pos++;
+        }
+        if(pos == text.length()){
+            return new Pair<String, Integer>("", pos);
+        }
+        
+        int begin = pos;
+        while(pos < text.length() && text.charAt(pos) != ' ' && text.charAt(pos) != '\n'){
+            pos++;
+        }
+        return new Pair<String, Integer>(text.substring(begin, pos), pos);
+    }
     
     /**
      * Create a new poet with the graph from corpus (as described above).
@@ -68,10 +89,38 @@ public class GraphPoet {
      * @throws IOException if the corpus file cannot be found or read
      */
     public GraphPoet(File corpus) throws IOException {
-        throw new RuntimeException("not implemented");
+        List<String> lines = Files.readAllLines(corpus.toPath());
+        String word, pre = "";
+        
+        for(String line: lines){
+            int pos = 0;
+            
+            while(pos < line.length()){
+                Pair<String, Integer> next = nextWord(line, pos);
+                word = next.getKey();
+                pos = next.getValue();
+                if(word.equals(" ")){
+                    break;
+                }
+                if(pre == ""){
+                    pre = word;
+                    continue;
+                }
+                
+                graph.add(pre);
+                graph.add(word);
+                int preWeight = graph.set(pre, word, 0);
+                graph.set(pre, word, preWeight+1);
+                pre = word;
+            }
+        }
+        
+//        throw new RuntimeException("not implemented");
     }
     
-    // TODO checkRep
+    private void checkRep(){
+        
+    }
     
     /**
      * Generate a poem.
@@ -80,9 +129,51 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        throw new RuntimeException("not implemented");
+        int pos = 0;
+        String word, pre = nextWord(input, pos).getKey();
+        pos = pre.length();
+        String output = pre;
+        
+        while(pos < input.length()){
+            Pair<String, Integer> next = nextWord(input, pos);
+            word = next.getKey();
+            pos = next.getValue();
+            if(word.equals(" ")){
+                break;
+            }
+            
+            Map<String, Integer> target = graph.targets(pre.toLowerCase());
+            Map<String, Integer> source = graph.sources(word.toLowerCase());
+            int maxWeight = 0, nowWeight;
+            String bridge = "";
+            for(String i: target.keySet()){
+                if(!source.containsKey(i)){
+                    continue;
+                }
+                nowWeight = target.get(i)+source.get(i);
+                if(maxWeight > nowWeight){
+                    continue;
+                }
+                bridge = i;
+                maxWeight = nowWeight;
+            }
+            
+            if(maxWeight > 0){
+                output+=" "+bridge+" "+word;
+            }
+            else{
+                output+=" "+word;
+            }
+            pre = word;
+        }
+        
+        return output;
+        
+//        throw new RuntimeException("not implemented");
     }
     
-    // TODO toString()
+    public String toString(){
+        return graph.toString();
+    }
     
 }
