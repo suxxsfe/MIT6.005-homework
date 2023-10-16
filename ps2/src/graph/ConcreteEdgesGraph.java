@@ -151,7 +151,6 @@ class Edge<L> {
     // Abstraction function:
     //   AF(u,v) = a edge between two vertices, which have label in L u and v
     // Representation invariant:
-    //   u != v
     //   weight != 0
     // Safety from rep exposure:
     //   All fields are private;
@@ -167,7 +166,6 @@ class Edge<L> {
     }
     
     private void checkRep(){
-        assert !source.equals(target);
         assert weight != 0;
     }
     
