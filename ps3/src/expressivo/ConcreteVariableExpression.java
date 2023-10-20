@@ -6,7 +6,7 @@ public class ConcreteVariableExpression implements Expression{
     // Abstraction function:
     //   AF(name) = a variable in expression with a name in String.
     // Representation invariant:
-    //   name != null, name.length() != 0
+    //   name != null, name.length() != 0, name only contains letters
     // Safety from rep exposure:
     //   All fields are private;
     //   name is immutable.
@@ -18,6 +18,10 @@ public class ConcreteVariableExpression implements Expression{
     private void checkRep(){
         assert name != null;
         assert name.length() != 0;
+        for(int i = 0; i < name.length(); i++){
+            char c = name.charAt(i);
+            assert (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+        }
     }
     
     /**
