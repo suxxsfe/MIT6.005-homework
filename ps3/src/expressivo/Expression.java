@@ -8,6 +8,12 @@ package expressivo;
  *   + and *
  *   nonnegative integers and floating-point numbers
  *   variables (case-sensitive nonempty strings of letters)
+ *   
+ *   two expressions are equal if:
+ *      - the expressions contain the same variables, numbers, and operators
+ *      - those variables, numbers, and operators are in the same order, read left-to-right
+ *      - they are grouped in the same way
+ *      - variables and numbers should be calculated in the same order: (3+4)+5 are not equal to 3+(4+5)
  * 
  * <p>PS3 instructions: this is a required ADT interface.
  * You MUST NOT change its name or package or the names or type signatures of existing methods.
@@ -16,8 +22,6 @@ package expressivo;
  */
 public interface Expression {
     
-    // Datatype definition
-    //   TODO
     static final double EPS = 1e-9;
     static final long HASH_BASE = 233;
     static final long HASH_MOD = 1000000007;

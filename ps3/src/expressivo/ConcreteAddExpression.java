@@ -21,10 +21,20 @@ public class ConcreteAddExpression implements Expression{
         assert right != null;
     }
     
+    /**
+     * Get the expression on the left of add sign.
+     * 
+     * @return Expression
+     */
     public Expression getLeft(){
         return left;
     }
     
+    /**
+     * Get the expression on the right of add sign.
+     * 
+     * @return Expression
+     */
     public Expression getRight(){
         return right;
     }

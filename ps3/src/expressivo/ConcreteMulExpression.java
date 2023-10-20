@@ -22,10 +22,20 @@ public class ConcreteMulExpression implements Expression{
         assert right != null;
     }
     
+    /**
+     * Get the expression on the left of multiple sign.
+     * 
+     * @return Expression
+     */
     public Expression getLeft(){
         return left;
     }
     
+    /**
+     * Get the expression on the right of multiple sign.
+     * 
+     * @return Expression
+     */
     public Expression getRight(){
         return right;
     }
