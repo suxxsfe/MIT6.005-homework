@@ -19,7 +19,7 @@ public class ConcreteNumberExpression implements Expression{
     //   number is a basic datatype double, it will be copied when returned as a result
     
     ConcreteNumberExpression(double _number){
-        number = _number;
+        number = Math.round(_number/EPS)*EPS;
     }
     
     private void checkRep(){
@@ -50,14 +50,15 @@ public class ConcreteNumberExpression implements Expression{
     public boolean equals(Object that){
         if(that instanceof ConcreteNumberExpression){
             ConcreteNumberExpression thatNumber = (ConcreteNumberExpression)that;
-            return Math.abs(number-thatNumber.number) < EPS;
+            return Math.round(number/EPS) == Math.round(thatNumber.number/EPS);
         }
         return false;
     }
     
     @Override
     public int hashCode(){
-        long hash = (long)Math.ceil(number/EPS);
+        long hash = (long)Math.round(number/EPS);
+            System.out.printf(">>>>>>>>>>>>>>> %d %f <<<<<<<<<<<<<\n", hash, number/EPS);
         return (int)(hash%HASH_MOD);
     }
     

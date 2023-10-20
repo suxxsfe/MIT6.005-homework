@@ -13,8 +13,10 @@ package expressivo;
  *      - the expressions contain the same variables, numbers, and operators
  *      - those variables, numbers, and operators are in the same order, read left-to-right
  *      - they are grouped in the same way
- *      - variables and numbers should be calculated in the same order: (3+4)+5 are not equal to 3+(4+5)
- *      - two numbers a and b are equal if and only if abs(a-b) less than EPS
+ *      - variables and numbers should be calculated in the same order: (3+4)+5 is not equal to 3+(4+5)
+ *      - two numbers a and b are equal if and only if round(a/EPS) == round(b/EPS):
+ *          1.0000000012 is equal to     1.0000000014
+ *          1.0000000012 is not equal to 1.0000000015
  * 
  * <p>PS3 instructions: this is a required ADT interface.
  * You MUST NOT change its name or package or the names or type signatures of existing methods.
