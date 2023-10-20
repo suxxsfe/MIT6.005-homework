@@ -14,6 +14,7 @@ package expressivo;
  *      - those variables, numbers, and operators are in the same order, read left-to-right
  *      - they are grouped in the same way
  *      - variables and numbers should be calculated in the same order: (3+4)+5 are not equal to 3+(4+5)
+ *      - two numbers a and b are equal if and only if abs(a-b) less than EPS
  * 
  * <p>PS3 instructions: this is a required ADT interface.
  * You MUST NOT change its name or package or the names or type signatures of existing methods.
