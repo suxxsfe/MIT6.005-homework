@@ -33,7 +33,7 @@ public class ConcreteNumberExpression implements Expression{
      */
     @Override
     public String toString(){
-        String snum = String.format(".%5f", number);
+        String snum = String.format("%.5f", number);
         
         int pos = snum.length()-1;
         while(snum.charAt(pos) == '0'){
