@@ -3,6 +3,17 @@
  */
 package expressivo;
 
+import org.antlr.v4.gui.Trees;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import expressivo.parser.ExpressionLexer;
+import expressivo.parser.ExpressionParser;
+import expressivo.parser.ExpressionListener;
+
 /**
  * An immutable data type representing a polynomial expression of:
  *   + and *
@@ -38,7 +49,19 @@ public interface Expression {
      * @throws IllegalArgumentException if the expression is invalid
      */
     public static Expression parse(String input) {
-        throw new RuntimeException("unimplemented");
+        ExpressionParser parser = makeParser(input);
+        ParseTree tree = parser.root();
+        
+        Trees.inspect(tree, parser);
+        
+        return new ConcreteNumberExpression(1);
+    }
+    
+    static ExpressionParser makeParser(String input){
+        CharStream stream = new ANTLRInputStream(input);
+        ExpressionLexer lexer = new ExpressionLexer(stream);
+        TokenStream tokens = new CommonTokenStream(lexer);
+        return new ExpressionParser(tokens);
     }
     
     /**
