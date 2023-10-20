@@ -43,25 +43,25 @@ public class ExpressionBaseListener implements ExpressionListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterOperator(ExpressionParser.OperatorContext ctx) { }
+  @Override public void enterAddExpression(ExpressionParser.AddExpressionContext ctx) { }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void exitOperator(ExpressionParser.OperatorContext ctx) { }
+  @Override public void exitAddExpression(ExpressionParser.AddExpressionContext ctx) { }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterPrimitive(ExpressionParser.PrimitiveContext ctx) { }
+  @Override public void enterMulExpression(ExpressionParser.MulExpressionContext ctx) { }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void exitPrimitive(ExpressionParser.PrimitiveContext ctx) { }
+  @Override public void exitMulExpression(ExpressionParser.MulExpressionContext ctx) { }
 
   /**
    * {@inheritDoc}

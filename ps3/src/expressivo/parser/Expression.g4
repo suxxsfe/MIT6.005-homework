@@ -30,10 +30,10 @@ import Configuration;
  * how to use Antlr and has links to reference information.
  */
 root : expression EOF;
-expression : primitive (operator primitive)*;
-operator : '+' | '*';
-primitive : NUMBER | VARIABLE | '(' expression ')';
-NUMBER : [0-9]+;
+expression : addExpression ('+' addExpression)*;
+addExpression : mulExpression ('*' mulExpression)*;
+mulExpression : NUMBER | VARIABLE | '(' expression ')';
+NUMBER : [0-9]+('.'[0-9])?;
 VARIABLE : [a-zA-Z]+;
 
 /* Tell Antlr to ignore spaces around tokens. */
