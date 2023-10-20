@@ -53,9 +53,9 @@ public class ConcreteMulExpression implements Expression{
     
     @Override
     public boolean equals(Object that){
-        if(that instanceof ConcreteAddExpression){
-            ConcreteAddExpression thatAdd = (ConcreteAddExpression)that;
-            return left.equals(thatAdd.getLeft()) && right.equals(thatAdd.getRight());
+        if(that instanceof ConcreteMulExpression){
+            ConcreteMulExpression thatMul = (ConcreteMulExpression)that;
+            return left.equals(thatMul.getLeft()) && right.equals(thatMul.getRight());
         }
         return false;
     }
