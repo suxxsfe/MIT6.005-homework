@@ -91,4 +91,26 @@ public class ExpressionTest {
         
         assertEquals("hash code of expression 1*abcd is 132316444", 132316444, mula.hashCode());
     }
+    
+    @Test
+    public void testParse(){
+        Expression expression = null;
+        String output;
+        
+        expression = Expression.parse("3 * x + 2.4");
+        output = "( 3 * x + 2.4 )";
+        assertEquals("expected "+output, output, expression.toString());
+        
+        expression = Expression.parse("((3 + 4) * x * x)");
+        output = "( 3 + 4 ) * x * x";
+        assertEquals("expected "+output, output, expression.toString());
+        
+        expression = Expression.parse("(2*x    )+    (    y*x    )");
+        output = "( 2 * x + y * x )";
+        assertEquals("expected "+output, output, expression.toString());
+        
+        expression = Expression.parse("4 + 3 * x + 2 * x * x + 1 * x * x * (((x)))");
+        output = "( ( ( 4 + 3 * x ) + 2 * x * x ) + 1 * x * x * x )";
+        assertEquals("expected "+output, output, expression.toString());
+    }
 }
