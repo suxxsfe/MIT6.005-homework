@@ -13,7 +13,7 @@ public class ConcreteNumberExpression implements Expression{
     // Abstraction function:
     //   AF(number) = the number in expression.
     // Representation invariant:
-    //   None.
+    //   number >= 0
     // Safty from rep exposure:
     //   number is private
     //   number is a basic datatype double, it will be copied when returned as a result
@@ -23,7 +23,7 @@ public class ConcreteNumberExpression implements Expression{
     }
     
     private void checkRep(){
-        
+        assert number >= 0;
     }
     
     /**
