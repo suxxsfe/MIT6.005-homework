@@ -18,6 +18,11 @@ public interface Expression {
     
     // Datatype definition
     //   TODO
+    static final double EPS = 1e-9;
+    static final long HASH_BASE = 233;
+    static final long HASH_MOD = 1000000007;
+    static final long ADD_HASH_VALUE = 1;
+    static final long MUL_HASH_VALUE = 2;
     
     /**
      * Parse an expression.
