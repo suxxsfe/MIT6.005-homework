@@ -58,7 +58,6 @@ public class ConcreteNumberExpression implements Expression{
     @Override
     public int hashCode(){
         long hash = (long)Math.round(number/EPS);
-            System.out.printf(">>>>>>>>>>>>>>> %d %f <<<<<<<<<<<<<\n", hash, number/EPS);
         return (int)(hash%HASH_MOD);
     }
     
