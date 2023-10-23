@@ -32,6 +32,16 @@ public class ExpressionTest {
     ConcreteVariableExpression vara = new ConcreteVariableExpression("abcd");
     ConcreteVariableExpression varb = new ConcreteVariableExpression("AbcD");
     
+    ConcreteAddExpression adda = new ConcreteAddExpression(numa, vara);
+    ConcreteAddExpression addb = new ConcreteAddExpression(vara, numa);
+    ConcreteAddExpression addc = new ConcreteAddExpression(adda, vara);
+    ConcreteAddExpression addd = new ConcreteAddExpression(adda, vara);
+    
+    ConcreteMulExpression mula = new ConcreteMulExpression(numa, vara);
+    ConcreteMulExpression mulb = new ConcreteMulExpression(vara, numa);
+    ConcreteMulExpression mulc = new ConcreteMulExpression(mula, vara);
+    ConcreteMulExpression muld = new ConcreteMulExpression(mula, vara);
+    
     @Test
     public void testConcreteNumberExpression(){
         assertEquals("expected String 1", "1", numa.toString());
@@ -61,11 +71,6 @@ public class ExpressionTest {
     
     @Test
     public void testConcreteAddExpression(){
-        ConcreteAddExpression adda = new ConcreteAddExpression(numa, vara);
-        ConcreteAddExpression addb = new ConcreteAddExpression(vara, numa);
-        ConcreteAddExpression addc = new ConcreteAddExpression(adda, vara);
-        ConcreteAddExpression addd = new ConcreteAddExpression(adda, vara);
-        
         assertEquals("expected String ( 1 + abcd )", "( 1 + abcd )", adda.toString());
         assertEquals("expected String ( ( 1 + abcd ) + abcd )", "( ( 1 + abcd ) + abcd )", addc.toString());
         
@@ -77,11 +82,6 @@ public class ExpressionTest {
     
     @Test
     public void testConcreteMulExpression(){
-        ConcreteMulExpression mula = new ConcreteMulExpression(numa, vara);
-        ConcreteMulExpression mulb = new ConcreteMulExpression(vara, numa);
-        ConcreteMulExpression mulc = new ConcreteMulExpression(mula, vara);
-        ConcreteMulExpression muld = new ConcreteMulExpression(mula, vara);
-        
         assertEquals("expected String 1 * abcd", "1 * abcd", mula.toString());
         assertEquals("expected String 1 * abcd * abcd", "1 * abcd * abcd", mulc.toString());
         
@@ -112,5 +112,27 @@ public class ExpressionTest {
         expression = Expression.parse("4 + 3 * x + 2 * x * x + 1 * x * x * (((x)))");
         output = "( ( ( 4 + 3 * x ) + 2 * x * x ) + 1 * x * x * x )";
         assertEquals("expected "+output, output, expression.toString());
+    }
+    
+    @Test
+    public void testDifferentiation(){
+        Expression result = null;
+        
+        //numbers
+        assertEquals("expected (1)' = 0", new ConcreteNumberExpression(0), numa.differentiation("variable"));
+        
+        //variables
+        assertEquals("expected (abcd)_{abcd}' = 1", new ConcreteNumberExpression(1), vara.differentiation("abcd"));
+        assertEquals("expected (AbcD)_{abcd}' = 0", new ConcreteNumberExpression(0), varb.differentiation("abcd"));
+        
+        //+
+        assertEquals("expected (1 + abcd)_{abcd}' = 0 + 1", new ConcreteAddExpression(numf, numa), adda.differentiation("abcd"));
+        assertEquals("expected (1 + abcd + abcd)_{abcd}' = 0 + 1 + 1",
+                new ConcreteAddExpression(new ConcreteAddExpression(numf, numa), numa), addc.differentiation("abcd"));
+        
+        //*
+        assertEquals("expected (1 * abcd)_{abcd}' = 0 * abcd + 1 * 1",
+                new ConcreteAddExpression(new ConcreteMulExpression(numf, vara), new ConcreteMulExpression(numa, numa)),
+                mula.differentiation("abcd"));
     }
 }
