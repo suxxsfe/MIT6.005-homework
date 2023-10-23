@@ -6,6 +6,7 @@ package expressivo;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Map;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -120,6 +121,19 @@ public interface Expression {
      * @return Expression, the derivative
      */
     public Expression differentiate(String variable);
+    
+    /**
+     * Simplify the giving expression with an environment (a mapping of variables to values)
+     * It substitutes the values for those variables into expression, and attempts to simplfy it
+     * For details:
+     *      - 0 * E will be simplified to 0
+     *      - 1 * E and 0 + E will be simplified to E
+     *      - Expressions like a * b or a + b (both a, b are numbers) will be reduced to a single number
+     * 
+     * @param environment Map from String to Double, giving the value of some variables
+     * @return the simplified expression
+     */
+    public Expression simplify(Map<String, Double> environment);
 }
 
 

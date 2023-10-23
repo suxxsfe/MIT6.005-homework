@@ -1,5 +1,7 @@
 package expressivo;
 
+import java.util.Map;
+
 public class ConcreteVariableExpression implements Expression{
     private final String name;
     
@@ -15,6 +17,10 @@ public class ConcreteVariableExpression implements Expression{
         name = _name;
     }
     
+    ConcreteVariableExpression(ConcreteVariableExpression that){
+        name = that.getName();
+    }
+    
     private void checkRep(){
         assert name != null;
         assert name.length() != 0;
@@ -22,6 +28,10 @@ public class ConcreteVariableExpression implements Expression{
             char c = name.charAt(i);
             assert (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
         }
+    }
+    
+    String getName(){
+        return name;
     }
     
     /**
@@ -38,7 +48,7 @@ public class ConcreteVariableExpression implements Expression{
     public boolean equals(Object that){
         if(that instanceof ConcreteVariableExpression){
             ConcreteVariableExpression thatVariable = (ConcreteVariableExpression)that;
-            return name.equals(thatVariable.name);
+            return name.equals(thatVariable.getName());
         }
         return false;
     }
@@ -59,5 +69,13 @@ public class ConcreteVariableExpression implements Expression{
             return new ConcreteNumberExpression(1);
         }
         return new ConcreteNumberExpression(0);
+    }
+    
+    @Override
+    public Expression simplify(Map<String, Double> environment){
+        if(environment.containsKey(name)){
+            return new ConcreteNumberExpression(environment.get(name));
+        }
+        return new ConcreteVariableExpression(this);
     }
 }

@@ -1,5 +1,7 @@
 package expressivo;
 
+import java.util.Map;
+
 
 public class ConcreteMulExpression implements Expression{
     private Expression left, right;
@@ -72,5 +74,29 @@ public class ConcreteMulExpression implements Expression{
         Expression uv = new ConcreteMulExpression(left.differentiate(variable), right);
         Expression vu = new ConcreteMulExpression(left, right.differentiate(variable));
         return new ConcreteAddExpression(uv, vu);
+    }
+    
+    @Override
+    public Expression simplify(Map<String, Double> environment){
+        Expression leftResult = left.simplify(environment);
+        Expression rightResult = right.simplify(environment);
+        Expression _0 = new ConcreteNumberExpression(0);
+        Expression _1 = new ConcreteNumberExpression(1);
+        
+        if(leftResult.equals(_0) || rightResult.equals(_0)){
+            return _0;
+        }
+        if(leftResult.equals(_1)){
+            return rightResult;
+        }
+        if(rightResult.equals(_1)){
+            return leftResult;
+        }
+        if(leftResult instanceof ConcreteNumberExpression && rightResult instanceof ConcreteNumberExpression){
+            ConcreteNumberExpression leftNumber = (ConcreteNumberExpression)leftResult;
+            ConcreteNumberExpression rightNumber = (ConcreteNumberExpression)rightResult;
+            return new ConcreteNumberExpression(leftNumber.getValue()*rightNumber.getValue());
+        }
+        return new ConcreteMulExpression(leftResult, rightResult);
     }
 }

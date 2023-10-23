@@ -3,6 +3,9 @@
  */
 package expressivo;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -134,5 +137,25 @@ public class ExpressionTest {
         assertEquals("expected (1 * abcd)_{abcd}' = 0 * abcd + 1 * 1",
                 new ConcreteAddExpression(new ConcreteMulExpression(numf, vara), new ConcreteMulExpression(numa, numa)),
                 mula.differentiate("abcd"));
+    }
+    
+    @Test
+    public void testSimplify(){
+        Expression result = null;
+        ConcreteVariableExpression _x = new ConcreteVariableExpression("x");
+        ConcreteVariableExpression _y = new ConcreteVariableExpression("y");
+        Map<String, Double> environment = new HashMap<String, Double>();
+        
+        environment.put("x", 2.0);
+        assertEquals("x*x*x with x=2 should be simplified to 8", new ConcreteNumberExpression(8),
+                (new ConcreteMulExpression(new ConcreteMulExpression(_x, _x), _x)).simplify(environment));
+            
+        environment.put("x", 0.0);
+        assertEquals("x*y*y+0 with x=0 should be simplified to 0", new ConcreteNumberExpression(0),
+                (new ConcreteAddExpression(new ConcreteMulExpression(new ConcreteMulExpression(_x, _y), _y), numf)).simplify(environment));
+        
+        environment.put("x", 1.0);
+        assertEquals("x*y+0 with x=1 should be simplified to y", _y,
+                (new ConcreteAddExpression(new ConcreteMulExpression(_x, _y), numf)).simplify(environment));
     }
 }

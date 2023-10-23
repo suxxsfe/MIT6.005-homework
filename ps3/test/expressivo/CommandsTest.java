@@ -3,6 +3,9 @@
  */
 package expressivo;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -34,6 +37,20 @@ public class CommandsTest {
         
         //*
         assertEquals("expected (abcd * abc)_{abcd}' = 0", Commands.differentiate("abcd*abc", "abcd"), "( 1 * abc + abcd * 0 )");
+    }
+    
+    @Test
+    public void testSimplify(){
+        Map<String, Double> environment = new HashMap<String, Double>();
+        
+        environment.put("x", 2.0);
+        assertEquals("x*x*x with x=2 should be simplified to 8", "8", Commands.simplify("x*x*x", environment));
+        
+        environment.put("x", 0.0);
+        assertEquals("x*y*y+0+0+0*zzz+0*12345 with x=0 should be simplified to 0", "0", Commands.simplify("x*y*y+0+0+0*zzz+0*12345", environment));
+        
+        environment.put("x", 1.0);
+        assertEquals("x*y*1+0 with x=1 should be simplified to y", "y", Commands.simplify("x*y*1+0", environment));
     }
     
 }

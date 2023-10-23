@@ -1,6 +1,7 @@
 package expressivo;
 
 import java.lang.Math;
+import java.util.Map;
 
 /**
  * An implementation of Expression.
@@ -22,8 +23,16 @@ public class ConcreteNumberExpression implements Expression{
         number = Math.round(_number/EPS)*EPS;
     }
     
+    ConcreteNumberExpression(ConcreteNumberExpression that){
+        number = that.getValue();
+    }
+    
     private void checkRep(){
         assert number >= 0;
+    }
+    
+    double getValue(){
+        return number;
     }
     
     /**
@@ -64,6 +73,11 @@ public class ConcreteNumberExpression implements Expression{
     @Override
     public Expression differentiate(String variable){
         return new ConcreteNumberExpression(0);
+    }
+    
+    @Override
+    public Expression simplify(Map<String, Double> environment){
+        return new ConcreteNumberExpression(this);
     }
     
 }
