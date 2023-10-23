@@ -68,7 +68,7 @@ public class ConcreteAddExpression implements Expression{
     }
     
     @Override
-    public Expression differentiation(String variable){
-        return new ConcreteAddExpression(left.differentiation(variable), right.differentiation(variable));
+    public Expression differentiate(String variable){
+        return new ConcreteAddExpression(left.differentiate(variable), right.differentiate(variable));
     }
 }

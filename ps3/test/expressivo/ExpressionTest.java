@@ -115,24 +115,24 @@ public class ExpressionTest {
     }
     
     @Test
-    public void testDifferentiation(){
+    public void testDifferentiate(){
         Expression result = null;
         
         //numbers
-        assertEquals("expected (1)' = 0", new ConcreteNumberExpression(0), numa.differentiation("variable"));
+        assertEquals("expected (1)' = 0", new ConcreteNumberExpression(0), numa.differentiate("variable"));
         
         //variables
-        assertEquals("expected (abcd)_{abcd}' = 1", new ConcreteNumberExpression(1), vara.differentiation("abcd"));
-        assertEquals("expected (AbcD)_{abcd}' = 0", new ConcreteNumberExpression(0), varb.differentiation("abcd"));
+        assertEquals("expected (abcd)_{abcd}' = 1", new ConcreteNumberExpression(1), vara.differentiate("abcd"));
+        assertEquals("expected (AbcD)_{abcd}' = 0", new ConcreteNumberExpression(0), varb.differentiate("abcd"));
         
         //+
-        assertEquals("expected (1 + abcd)_{abcd}' = 0 + 1", new ConcreteAddExpression(numf, numa), adda.differentiation("abcd"));
+        assertEquals("expected (1 + abcd)_{abcd}' = 0 + 1", new ConcreteAddExpression(numf, numa), adda.differentiate("abcd"));
         assertEquals("expected (1 + abcd + abcd)_{abcd}' = 0 + 1 + 1",
-                new ConcreteAddExpression(new ConcreteAddExpression(numf, numa), numa), addc.differentiation("abcd"));
+                new ConcreteAddExpression(new ConcreteAddExpression(numf, numa), numa), addc.differentiate("abcd"));
         
         //*
         assertEquals("expected (1 * abcd)_{abcd}' = 0 * abcd + 1 * 1",
                 new ConcreteAddExpression(new ConcreteMulExpression(numf, vara), new ConcreteMulExpression(numa, numa)),
-                mula.differentiation("abcd"));
+                mula.differentiate("abcd"));
     }
 }

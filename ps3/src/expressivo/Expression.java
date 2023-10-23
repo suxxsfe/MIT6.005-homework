@@ -119,7 +119,7 @@ public interface Expression {
      * @param variable name of the variable in String
      * @return Expression, the derivative
      */
-    public Expression differentiation(String variable);
+    public Expression differentiate(String variable);
 }
 
 

@@ -62,7 +62,7 @@ public class ConcreteNumberExpression implements Expression{
     }
     
     @Override
-    public Expression differentiation(String variable){
+    public Expression differentiate(String variable){
         return new ConcreteNumberExpression(0);
     }
     

@@ -54,7 +54,7 @@ public class ConcreteVariableExpression implements Expression{
     }
    
     @Override
-    public Expression differentiation(String variable){
+    public Expression differentiate(String variable){
         if(name.equals(variable)){
             return new ConcreteNumberExpression(1);
         }

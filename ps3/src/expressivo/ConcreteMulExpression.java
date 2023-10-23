@@ -68,9 +68,9 @@ public class ConcreteMulExpression implements Expression{
     }
     
     @Override
-    public Expression differentiation(String variable){
-        Expression uv = new ConcreteMulExpression(left.differentiation(variable), right);
-        Expression vu = new ConcreteMulExpression(left, right.differentiation(variable));
+    public Expression differentiate(String variable){
+        Expression uv = new ConcreteMulExpression(left.differentiate(variable), right);
+        Expression vu = new ConcreteMulExpression(left, right.differentiate(variable));
         return new ConcreteAddExpression(uv, vu);
     }
 }
