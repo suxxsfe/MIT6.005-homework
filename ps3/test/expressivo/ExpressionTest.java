@@ -74,11 +74,11 @@ public class ExpressionTest {
     
     @Test
     public void testConcreteAddExpression(){
-        assertEquals("expected String ( 1 + abcd )", "( 1 + abcd )", adda.toString());
-        assertEquals("expected String ( ( 1 + abcd ) + abcd )", "( ( 1 + abcd ) + abcd )", addc.toString());
+        assertEquals("expected String 1 + abcd", "1 + abcd", adda.toString());
+        assertEquals("expected String 1 + abcd + abcd", "1 + abcd + abcd", addc.toString());
         
         assertFalse("1 + abcd is not equal to abcd + 1", adda.equals(addb));
-        assertTrue("the same expression ( ( 1 + abcd ) + abcd )", addc.equals(addd));
+        assertTrue("the same expression 1 + abcd + abcd", addc.equals(addd));
         
         assertEquals("hash code of expression 1+abcd is 132316443", 132316443, adda.hashCode());
     }
@@ -101,7 +101,7 @@ public class ExpressionTest {
         String output;
         
         expression = Expression.parse("3 * x + 2.4");
-        output = "( 3 * x + 2.4 )";
+        output = "3 * x + 2.4";
         assertEquals("expected "+output, output, expression.toString());
         
         expression = Expression.parse("((3 + 4) * x * x)");
@@ -109,11 +109,11 @@ public class ExpressionTest {
         assertEquals("expected "+output, output, expression.toString());
         
         expression = Expression.parse("(2*x    )+    (    y*x    )");
-        output = "( 2 * x + y * x )";
+        output = "2 * x + y * x";
         assertEquals("expected "+output, output, expression.toString());
         
         expression = Expression.parse("4 + 3 * x + 2 * x * x + 1 * x * x * (((x)))");
-        output = "( ( ( 4 + 3 * x ) + 2 * x * x ) + 1 * x * x * x )";
+        output = "4 + 3 * x + 2 * x * x + 1 * x * x * x";
         assertEquals("expected "+output, output, expression.toString());
     }
     

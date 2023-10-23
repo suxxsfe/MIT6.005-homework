@@ -42,15 +42,23 @@ public class ConcreteAddExpression implements Expression{
     }
     
     /**
-     * Give a representation of the expression
+     * Give a representation of the expression.
+     * to ensure the operating order exactly same as the input, for the expression on the rightside
+     *      of the add sign, there will be a pair of parentheses around it if it is composed of
+     *      two expression merged by a add plus.
+     *      eg. for 3 + ( 4 + 5 ), 4 + 5 is the expression on the rightside, and there should be
+     *          a pair of parentheses around it.
+     * there is a whitespace between parentheses, plus sign, and other expression
      * 
      * @return a String, representing the expression.
-     *         there is a pair of parenthnesses around the expression
-     *         there is a whitespace between parenthnesses, plus sign, and other expression
      */
     @Override
     public String toString(){
-        return "( "+left.toString()+" + "+right.toString()+" )";
+        String rightString = right.toString();
+        if(right instanceof ConcreteAddExpression){
+            rightString = "( "+rightString+" )";
+        }
+        return left.toString()+" + "+rightString;
     }
     
     @Override

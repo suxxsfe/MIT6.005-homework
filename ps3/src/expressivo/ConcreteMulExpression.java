@@ -43,14 +43,25 @@ public class ConcreteMulExpression implements Expression{
     }
     
     /**
-     * Give a representation of the expression
+     * Give a representation of the expression.
+     * to ensure the operating orders, for both expression merged by the multiple sign,
+     *      there will be a pair of parentheses around it if it is composed of two expressions
+     *      merge by a plus sign.
+     * there is a whitespace between parentheses, multiple sign, and other expression
      * 
      * @return a String, representing the expression
-     *         there is a whitespace between multiple sign and other expression
      */
     @Override
     public String toString(){
-        return left.toString()+" * "+right.toString();
+        String leftString = left.toString();
+        String rightString = right.toString();
+        if(left instanceof ConcreteAddExpression){
+            leftString = "( "+leftString+" )";
+        }
+        if(right instanceof ConcreteAddExpression){
+            rightString = "( "+rightString+" )";
+        }
+        return leftString+" * "+rightString;
     }
     
     @Override
