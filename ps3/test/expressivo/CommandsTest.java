@@ -20,7 +20,20 @@ public class CommandsTest {
         assert false; // make sure assertions are enabled with VM argument: -ea
     }
     
-    
-    // TODO tests for Commands.differentiate() and Commands.simplify()
+    @Test
+    public void testDifferentiate(){
+        //numbers
+        assertEquals("expected (1)' = 0", Commands.differentiate("1", "variable"), "0");
+        
+        //variables
+        assertEquals("expected (abcd)_{abcd}' = 1", Commands.differentiate("abcd", "abcd"), "1");
+        assertEquals("expected (abcd)_{abc}' = 0", Commands.differentiate("abcd", "abc"), "0");
+        
+        //+
+        assertEquals("expected (1 + abcd)_{abcd}' = ( 0 + 1 )", Commands.differentiate("1+abcd", "abcd"), "( 0 + 1 )");
+        
+        //*
+        assertEquals("expected (abcd * abc)_{abcd}' = 0", Commands.differentiate("abcd*abc", "abcd"), "( 1 * abc + abcd * 0 )");
+    }
     
 }
