@@ -113,8 +113,13 @@ public interface Expression {
     @Override
     public int hashCode();
     
-    // TODO more instance methods
-    
+    /**
+     * Produces an expression with the derivative respect to the giving variable. 
+     * 
+     * @param variable name of the variable in String
+     * @return Expression, the derivative
+     */
+    public Expression differentiation(String variable);
 }
 
 

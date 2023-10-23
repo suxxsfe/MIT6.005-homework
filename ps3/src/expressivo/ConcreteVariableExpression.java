@@ -53,4 +53,11 @@ public class ConcreteVariableExpression implements Expression{
         return (int)hash;
     }
    
+    @Override
+    public Expression differentiation(String variable){
+        if(name.equals(variable)){
+            return new ConcreteNumberExpression(1);
+        }
+        return new ConcreteNumberExpression(0);
+    }
 }

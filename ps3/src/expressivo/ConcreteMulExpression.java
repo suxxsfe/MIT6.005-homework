@@ -66,4 +66,11 @@ public class ConcreteMulExpression implements Expression{
         long _right = right.hashCode();
         return (int)(((_left*HASH_BASE%HASH_MOD+_right)%HASH_MOD*HASH_BASE%HASH_MOD+MUL_HASH_VALUE)%HASH_MOD);
     }
+    
+    @Override
+    public Expression differentiation(String variable){
+        Expression uv = new ConcreteMulExpression(left.differentiation(variable), right);
+        Expression vu = new ConcreteMulExpression(left, right.differentiation(variable));
+        return new ConcreteAddExpression(uv, vu);
+    }
 }

@@ -61,4 +61,9 @@ public class ConcreteNumberExpression implements Expression{
         return (int)(hash%HASH_MOD);
     }
     
+    @Override
+    public Expression differentiation(String variable){
+        return new ConcreteNumberExpression(0);
+    }
+    
 }

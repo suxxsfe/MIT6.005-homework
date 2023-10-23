@@ -66,4 +66,9 @@ public class ConcreteAddExpression implements Expression{
         long _right = right.hashCode();
         return (int)(((_left*HASH_BASE%HASH_MOD+_right)%HASH_MOD*HASH_BASE%HASH_MOD+ADD_HASH_VALUE)%HASH_MOD);
     }
+    
+    @Override
+    public Expression differentiation(String variable){
+        return new ConcreteAddExpression(left.differentiation(variable), right.differentiation(variable));
+    }
 }
