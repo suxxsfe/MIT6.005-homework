@@ -56,13 +56,24 @@ public class MinesweeperServer {
             Socket socket = serverSocket.accept();
 
             // handle the client
-            try {
-                handleConnection(socket);
-            } catch (IOException ioe) {
-                ioe.printStackTrace(); // but don't terminate serve()
-            } finally {
-                socket.close();
-            }
+            new Thread(new Runnable(){
+                public void run(){
+                    try{
+                        handleConnection(socket);
+                    }
+                    catch(IOException ioe){
+                        ioe.printStackTrace(); // but don't terminate serve()
+                    }
+                    finally{
+                        try{
+                            socket.close();
+                        }
+                        catch(IOException ioe){
+                            ioe.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
         }
     }
 
