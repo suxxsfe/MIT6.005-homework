@@ -28,6 +28,8 @@ public class MinesweeperServer {
     private final ServerSocket serverSocket;
     /** True if the server should *not* disconnect a client after a BOOM message. */
     private final boolean debug;
+    
+    private final Board gameBoard;
 
     // TODO: Abstraction function, rep invariant, rep exposure
 
@@ -38,11 +40,17 @@ public class MinesweeperServer {
      * @param debug debug mode flag
      * @throws IOException if an error occurs opening the server socket
      */
-    public MinesweeperServer(int port, boolean debug) throws IOException {
+    public MinesweeperServer(int port, boolean debug, int sizeX, int sizeY, boolean[][] board) throws IOException {
         serverSocket = new ServerSocket(port);
         this.debug = debug;
+        if(board != null){
+            gameBoard = new Board(sizeX, sizeY, board);
+        }
+        else{
+            gameBoard = new Board(sizeX, sizeY);
+        }
     }
-
+    
     /**
      * Run the server, listening for client connections and handling them.
      * Never returns unless an exception is thrown.
@@ -241,6 +249,32 @@ public class MinesweeperServer {
             throw new RuntimeException(ioe);
         }
     }
+    
+    private static boolean isNumber(char c){
+        return c >= '0' && c <= '9';
+    }
+    
+    private static int readInt(String input, int start, int end){
+        int number = 0;
+        for(int i = start; i < end; i++){
+            if(!isNumber(input.charAt(i))){
+                return -1;
+            }
+            number = number*10+(int)(input.charAt(i)-'0');
+        }
+        return number;
+    }
+    
+    private static int readGrid(String input, int pos){
+        if(input.length() <= pos){
+            return -1;
+        }
+        char c = input.charAt(pos);
+        if(c != '0' && c != '1'){
+            return -1;
+        }
+        return (int)(c-'0');
+    }
 
     /**
      * Start a MinesweeperServer running on the specified port, with either a random new board or a
@@ -258,9 +292,80 @@ public class MinesweeperServer {
      */
     public static void runMinesweeperServer(boolean debug, Optional<File> file, int sizeX, int sizeY, int port) throws IOException {
         
-        // TODO: Continue implementation here in problem 4
+        MinesweeperServer server = null;
+        boolean[][] board;
         
-        MinesweeperServer server = new MinesweeperServer(port, debug);
+        if(sizeX > 0 && sizeY > 0){
+            board = null;
+        }
+        else if(file.isPresent()){
+            BufferedReader reader = new BufferedReader(new FileReader(file.get()));
+            try{
+                String input;
+                
+                input = reader.readLine();
+                if(input == null){
+                    throw new RuntimeException();
+                }
+                int pos0 = input.indexOf(" ");
+                int posn = input.length();
+                while(input.charAt(posn-1) == '\n' || input.charAt(posn-1) == '\r'){
+                    posn--;
+                }
+                sizeX = readInt(input, 0, pos0);
+                sizeY = readInt(input, pos0+1, posn);
+                if(sizeX == -1 || sizeY == -1){
+                    throw new RuntimeException();
+                }
+                
+                board = new boolean[sizeY][sizeX];
+                for(int i = 0; i < sizeY; i++){
+                    input = reader.readLine();
+                    if(input == null){
+                        throw new RuntimeException();
+                    }
+                    
+                    for(int j = 0; j < sizeX; j++){
+                        int cur = readGrid(input, j*2);
+                        if(cur == -1){
+                            System.out.printf("%d %d\n", i, j);
+                            throw new RuntimeException();
+                        }
+                        board[i][j] = (cur == 1);
+                    }
+                    for(int j = sizeX*2; j < input.length(); j++){
+                        if(input.charAt(j) != '\n' && input.charAt(j) != '\r'){
+                            throw new RuntimeException();
+                        }
+                    }
+                }
+                
+                input = reader.readLine();
+                if(input != null){
+                    throw new RuntimeException();
+                }
+            }
+            finally{
+                reader.close();
+            }
+            
+        }
+        else{
+            sizeX = sizeY = DEFAULT_SIZE;
+            board = null;
+        }
+        
+        System.out.printf("%d %d\n", sizeX, sizeY);
+        if(board != null){
+            for(int i = 0; i < sizeY; i++){
+                for(int j = 0; j < sizeX; j++){
+                    System.out.printf(board[i][j] ? "1" : "0");
+                }
+                System.out.printf("\n");
+            }
+        }
+        
+        server = new MinesweeperServer(port, debug, sizeX, sizeY, board);
         server.serve();
     }
 }
