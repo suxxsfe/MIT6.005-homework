@@ -72,10 +72,10 @@ public class Board {
     public Board(int _sizeX, int _sizeY){
         sizeX = _sizeX;
         sizeY = _sizeY;
-        board = new Grid[sizeY][sizeX];
+        board = new Grid[sizeX][sizeY];
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
-                board[j][i] = new Grid(Math.random() <= rate);
+                board[i][j] = new Grid(Math.random() <= rate);
             }
         }
     }
@@ -83,10 +83,10 @@ public class Board {
     public Board(int _sizeX, int _sizeY, boolean[][] bombs){
         sizeX = _sizeX;
         sizeY = _sizeY;
-        board = new Grid[sizeY][sizeX];
+        board = new Grid[sizeX][sizeY];
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
-                board[j][i] = new Grid(bombs[j][i]);
+                board[i][j] = new Grid(bombs[j][i]);
             }
         }
     }
@@ -99,7 +99,7 @@ public class Board {
         int cnt = 0;
         for(int k = 0; k < dNum; k++){
             int newX = x+dx[k], newY = y+dy[k];
-            if(checkGrid(newX, newY) && board[newY][newX].isBomb()){
+            if(checkGrid(newX, newY) && board[newX][newY].isBomb()){
                 cnt++;
             }
         }
@@ -111,7 +111,7 @@ public class Board {
         for(int j = 0; j < sizeY; j++){
             res[j] = "";
             for(int i = 0; i < sizeX; i++){
-                char grid = board[j][i].getStatus();
+                char grid = board[i][j].getStatus();
                 res[j]+=(grid == ' ' ? countBombs(i, j) : grid);
             }
         }
@@ -120,13 +120,13 @@ public class Board {
     
     public void flag(int x, int y){
         if(checkGrid(x, y)){
-            board[y][x].flag();
+            board[x][y].flag();
         }
     }
     
     public void deflag(int x, int y){
         if(checkGrid(x, y)){
-            board[y][x].deflag();
+            board[x][y].deflag();
         }
     }
     
@@ -136,20 +136,20 @@ public class Board {
         }
         for(int k = 0; k < dNum; k++){
             int newX = x+dx[k], newY = y+dy[k];
-            if(checkGrid(newX, newY) && board[newY][newX].getStatus() != ' '){
-                board[newY][newX].dig();
+            if(checkGrid(newX, newY) && board[newX][newY].getStatus() != ' '){
+                board[newX][newY].dig();
                 digRec(newX, newY);
             }
         }
     }
     
     public boolean dig(int x, int y){
-        if(!checkGrid(x, y) || board[y][x].getStatus() != '-'){
+        if(!checkGrid(x, y) || board[x][y].getStatus() != '-'){
             return false;
         }
-        board[y][x].dig();
-        if(board[y][x].isBomb()){
-            board[y][x].clearBomb();
+        board[x][y].dig();
+        if(board[x][y].isBomb()){
+            board[x][y].clearBomb();
             return true;
         }
         digRec(x, y);
