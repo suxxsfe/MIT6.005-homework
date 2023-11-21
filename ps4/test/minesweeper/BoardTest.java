@@ -22,22 +22,18 @@ public class BoardTest {
     
     @Test
     public void testInit(){
-        String s[] = b.getBoard();
+        String s = b.getBoard();
         
-        assertEquals("s[0] = ----", s[0], "----");
-        assertEquals("s[0] = ----", s[1], "----");
-        assertEquals("s[0] = ----", s[2], "----");
+        assertEquals("---- ---- ---- ", s, "- - - -\n- - - -\n- - - -\n");
     }
     
     @Test
     public void testFlag(){
         b.flag(0, 0);
         b.flag(1, 2);
-        String s[] = b.getBoard();
+        String s = b.getBoard();
         
-        assertEquals("s[0] = F---", s[0], "F---");
-        assertEquals("s[1] = ----", s[1], "----");
-        assertEquals("s[2] = -F--", s[2], "-F--");
+        assertEquals("F--- ---- -F-- ", s, "F - - -\n- - - -\n- F - -\n");
     }
     
     @Test
@@ -45,11 +41,9 @@ public class BoardTest {
         b.flag(0, 0);
         b.flag(1, 2);
         b.deflag(0, 0);
-        String s[] = b.getBoard();
+        String s = b.getBoard();
         
-        assertEquals("s[0] = ----", s[0], "----");
-        assertEquals("s[1] = ----", s[1], "----");
-        assertEquals("s[2] = -F--", s[2], "-F--");
+        assertEquals("---- ---- -F--", s, "- - - -\n- - - -\n- F - -\n");
     }
     
     @Test
@@ -61,12 +55,10 @@ public class BoardTest {
         
         Board bb = new Board(4, 3, bombs);
         boolean ret = bb.dig(1, 1);
-        String s[] = bb.getBoard();
+        String s = bb.getBoard();
         
         assertEquals("return true if dig a bomb", ret, true);
-        assertEquals("s[0] = ----", s[0], "----");
-        assertEquals("s[1] = -3--", s[1], "-3--");
-        assertEquals("s[2] = ----", s[2], "----");
+        assertEquals("---- -3-- ----", s, "- - - -\n- 3 - -\n- - - -\n");
     }
     
     @Test
@@ -78,11 +70,9 @@ public class BoardTest {
         
         Board bb = new Board(4, 3, bombs);
         boolean ret = bb.dig(0, 0);
-        String s[] = bb.getBoard();
+        String s = bb.getBoard();
         
         assertEquals("return false if no bomb here", ret, false);
-        assertEquals("s[0] =   11", s[0], "  1-");
-        assertEquals("s[1] = 122-", s[1], "122-");
-        assertEquals("s[2] = ----", s[2], "----");
+        assertEquals("  1- 122- ----", s, "    1 -\n1 2 2 -\n- - - -\n");
     }
 }

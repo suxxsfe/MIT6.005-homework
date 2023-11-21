@@ -117,15 +117,16 @@ public class Board {
         return cnt == 0 ? ' ' : (char)(cnt+'0');
     }
     
-    public synchronized String[] getBoard(){
-        String res[] = new String[sizeY];
+    public synchronized String getBoard(){
+        String res = "";
         for(int j = 0; j < sizeY; j++){
-            res[j] = "";
             for(int i = 0; i < sizeX; i++){
                 char grid = board[i][j].getStatus();
-                res[j]+=(grid == ' ' ? countBombs(i, j) : grid);
+                res+=(grid == ' ' ? countBombs(i, j) : grid);
+                res+= (i == sizeX-1) ? '\n' : ' ';
             }
         }
+        System.out.println(res);
         return res;
     }
     
