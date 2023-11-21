@@ -20,6 +20,8 @@ class Grid{
     // Safety from rep exposure:
     //   All fields are private
     //   All fields are basic data type
+    //
+    // Grid is not thread safe
        
     private boolean checkRep(){
         return status == '-' || status == 'F' || status == ' ';
@@ -60,14 +62,23 @@ class Grid{
  */
 public class Board {
     
-    // TODO: Abstraction function, rep invariant, rep exposure, thread safety
+    // Abstraction function:
+    //   AF(sizeX, sizeY, board) = a game board with size sizeX(horizontal) * sizeY(vertical)
+    // Rep invariant:
+    //   sizeX > 0, sizeY > 0
+    //   board[i][j] != null
+    // Safety from rep exposure:
+    //   All fields are private and final
+    //   nothing in rep will be returned as result
+    // Thread safety argument:
+    //   all accessed to board happen within Board public method, which are all guarded by Board's lock
     
-    int sizeX, sizeY;
+    private final int sizeX, sizeY;
     private final Grid[][] board;
     static final int dNum = 8;
     static final int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
     static final int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    static final double rate = 0.5;
+    static final double rate = 0.25;
     
     public Board(int _sizeX, int _sizeY){
         sizeX = _sizeX;
@@ -106,7 +117,7 @@ public class Board {
         return cnt == 0 ? ' ' : (char)(cnt+'0');
     }
     
-    public String[] getBoard(){
+    public synchronized String[] getBoard(){
         String res[] = new String[sizeY];
         for(int j = 0; j < sizeY; j++){
             res[j] = "";
@@ -118,13 +129,13 @@ public class Board {
         return res;
     }
     
-    public void flag(int x, int y){
+    public synchronized void flag(int x, int y){
         if(checkGrid(x, y)){
             board[x][y].flag();
         }
     }
     
-    public void deflag(int x, int y){
+    public synchronized void deflag(int x, int y){
         if(checkGrid(x, y)){
             board[x][y].deflag();
         }
@@ -143,7 +154,7 @@ public class Board {
         }
     }
     
-    public boolean dig(int x, int y){
+    public synchronized boolean dig(int x, int y){
         if(!checkGrid(x, y) || board[x][y].getStatus() != '-'){
             return false;
         }
