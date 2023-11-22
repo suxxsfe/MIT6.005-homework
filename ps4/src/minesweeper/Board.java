@@ -126,7 +126,6 @@ public class Board {
                 res+= (i == sizeX-1) ? '\n' : ' ';
             }
         }
-        System.out.println(res);
         return res;
     }
     
