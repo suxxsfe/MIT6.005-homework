@@ -14,8 +14,10 @@ import minesweeper.Board;
  */
 public class MinesweeperServer {
 
-    // System thread safety argument
-    //   TODO Problem 5
+    // Thread safety argument:
+    //   sizeX, sizeY, playerNum are basic data type
+    //   gameBoard is thread safe data type
+    //   debug, serverSocket are final
 
     /** Default server port. */
     private static final int DEFAULT_PORT = 4444;
@@ -31,10 +33,11 @@ public class MinesweeperServer {
     
     private final int sizeX, sizeY;
     private final Board gameBoard;
+    private int playerNum;
 
     // Abstraction function:
     //   AF(serverSocket, debug, sizeX, sizeY, gameBoard) = a minesweeper server,
-    //      played in Board gameBoard which is sizeX(colums) * sizeY(rows),
+    //      playerNum players are playing in Board gameBoard which is sizeX(colums) * sizeY(rows),
     //      run on serverSocket, with flag debug
     // Rep invariant:
     //   serverSocket != null, gameBoard != null
@@ -59,6 +62,8 @@ public class MinesweeperServer {
         else{
             gameBoard = new Board(sizeX, sizeY);
         }
+        
+        playerNum = 0;
     }
     
     /**
@@ -69,7 +74,6 @@ public class MinesweeperServer {
      *                     (IOExceptions from individual clients do *not* terminate serve())
      */
     public void serve() throws IOException {
-        int playerNum = 0;
         
         while (true) {
             // block until a client connects
@@ -77,14 +81,16 @@ public class MinesweeperServer {
 
             // handle the client
             new Thread(new Runnable(){
+                @Override
                 public void run(){
                     try{
-                        handleConnection(socket, playerNum);
+                        handleConnection(socket, ++playerNum);
                     }
                     catch(IOException ioe){
                         ioe.printStackTrace(); // but don't terminate serve()
                     }
                     finally{
+                        playerNum--;
                         try{
                             socket.close();
                         }
@@ -97,8 +103,8 @@ public class MinesweeperServer {
         }
     }
 
-    static final String HELLO_MESSAGE = "Welcome to Minesweeper. Board: %d columns by %d rows."
-                                    +"Players: %d including	you. Type \'help\' for help.\n";
+    static final String HELLO_MESSAGE = "Welcome to Minesweeper. Board: %d columns by %d rows. "
+                                    +"Players: %d including you. Type \'help\' for help.\n";
     static final String HELP_MESSAGE = "this is help message\n";
     static final String BOOM_MESSAGE = "BOOM!\n";
     /**
