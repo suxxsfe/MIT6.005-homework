@@ -126,7 +126,7 @@ public class MinesweeperServer {
                     // TODO: Consider improving spec of handleRequest to avoid use of null
                     out.println(output);
                 }
-                else{
+                if(output == null || (!debug && output.equals(BOOM_MESSAGE))){
                     break;
                 }
             }
